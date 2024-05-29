@@ -171,7 +171,7 @@ def main():
                          Dgt_loss_meter.val))  # aux_loss: %.2f, aux_loss_meter.val,
 
         curr_epoch += 1
-        val_F, val_acc, val_IoU, val_loss = validate(val_loader, model_seg, padding_rate=8)
+        val_F, val_acc, val_IoU, val_loss = validate(val_loader, model_seg)
         if val_F > bestF:
             bestF = val_F
             bestacc = val_acc
