@@ -17,7 +17,7 @@ WHU_CLASSES = ['not building', 'building']
 WHU_MEAN = np.array([110.99, 113.54, 105.35])
 WHU_STD = np.array([55.37, 51.94, 55.49])
 
-root = '/data_dir'
+root = './data_dir/WHU'
 
 
 def showIMG(img):
@@ -89,7 +89,7 @@ def read_RSimages(mode, rescale=False, rotate_aug=False):
     data_dir = root
     assert mode in ['train', 'val', 'test']
     img_dir = os.path.join(data_dir, mode, 'image')
-    mask_dir = os.path.join(data_dir, mode, 'label_255')
+    mask_dir = os.path.join(data_dir, mode, 'label')
 
     data_list = os.listdir(img_dir)
     data, labels = [], []
@@ -99,15 +99,15 @@ def read_RSimages(mode, rescale=False, rotate_aug=False):
         it_ext = it[-4:]
         if (it_ext == '.tif'):
             img_path = os.path.join(img_dir, it)
-            mask_path = os.path.join(mask_dir, it_name + '.png')
+            mask_path = os.path.join(mask_dir, it_name + '.tif')
 
             img = io.imread(img_path)
             # label = gdal_array.LoadFile(mask_path)
             label = io.imread(mask_path)
             data.append(img)
-            labels.append(label)
+            labels.append(label[:, :, 0])
             count += 1
-            if not count % 500: print('%d/%d images loaded.' % (count, len(data_list)))
+            if not count % 10: print('%d/%d images loaded.' % (count, len(data_list)))
             # if count: break
     print(data[0].shape)
     print(str(len(data)) + ' ' + mode + ' images' + ' loaded.')
